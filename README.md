@@ -37,7 +37,7 @@ get_subvols(data::Array{Float64, 2},
   * `side_divs` is the number of volumes per dimension to subdivide the sample into 
   * `metric` is an optional parameter to define the distance between points, assumed to be Euclidean
 
-# Jackknifing
+### Jackknifing
 
 Once the subvolumes have been determined, the 'jackknife' function can be used to find the mean and covariance
 of your desired estimator:
