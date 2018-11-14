@@ -137,7 +137,8 @@ function obsfunc must be callable with the form
 
 obsfunc(data::Array{Float64, 2}, args...)
 
-for optional args tuple and the value returned by obsfunc must be in the form of an array of floats. If any of the returned values are NaNs, an error will be
+for optional args tuple and the value returned by obsfunc must be in the form
+of an array of floats. If any of the returned values are NaNs, an error will be
 raised. By default, the covariance matrix is computed for observables in more
 than one dimension, but setting covar to false will result in only the diagonal
 variances being returned.
@@ -146,7 +147,8 @@ function jackknife(obsfunc::Function,
                    data::Array{Float64, 2},
                    subvolinds::Array{Int, 1},
                    args::Tuple = ();
-                   covar::Bool = true)::Tuple
+                   covar::Bool = true,
+                   pass_vol = false)::Tuple
 
     volset = BitSet(subvolinds)
     nvols = length(volset)
@@ -155,8 +157,15 @@ function jackknife(obsfunc::Function,
 
     # get the observables for the data with each volume left out
     local ivals::Array{Array{Float64, 1}, 1}
-    ivals = [obsfunc(data[findall(subvolinds .!= vol), :],
-                     args...) for vol in volset]
+    for (i, vol) in enumerate(volset)
+        if pass_vol
+            argsvol = (args..., vol)
+            ivals[i] = obsfunc(data[findall(subvolinds .!= vol), :],
+                               argsvol...)
+        else
+            ivals[i] = obsfunc(data[findall(subvolinds .!= vol), :], args...)
+        end
+    end
     meanvals = sum(ivals) .* meanfac
 
     if any(isnan.(meanvals))
