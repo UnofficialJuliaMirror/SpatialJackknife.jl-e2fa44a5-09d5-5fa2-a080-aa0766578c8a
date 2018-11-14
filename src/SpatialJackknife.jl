@@ -156,7 +156,7 @@ function jackknife(obsfunc::Function,
     varfac = (nvols - 1) / nvols
 
     # get the observables for the data with each volume left out
-    local ivals::Array{Array{Float64, 1}, 1}
+    local ivals = Array{Array{Float64, 1}, 1}(undef, nvols)
     for (i, vol) in enumerate(volset)
         if pass_vol
             argsvol = (args..., vol)
