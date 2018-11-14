@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/kilianbreathnach/SpatialJackknife.jl.svg?branch=master)](https://travis-ci.com/kilianbreathnach/SpatialJackknife.jl)
+
 # SpatialJackknife.jl
 
 This package can be used to perform jackknife resampling on spatial data in an arbitrary number of dimensions
